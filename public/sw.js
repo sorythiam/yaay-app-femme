@@ -1,5 +1,5 @@
 // Service Worker pour Yaay - Mode hors-ligne basique
-const CACHE_NAME = 'yaay-app-femme-v1';
+const CACHE_NAME = 'yaay-app-femme-v2';
 const URLS_TO_CACHE = ['/'];
 
 // Installation
@@ -26,19 +26,34 @@ self.addEventListener('activate', (event) => {
 
 // Stratégie réseau d'abord, cache en secours
 self.addEventListener('fetch', (event) => {
+  // Ignorer les requêtes non-HTTP (extensions Chrome, etc.)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
   // Ne pas cacher les requêtes Supabase (données dynamiques)
   if (event.request.url.includes('supabase.co')) {
+    return;
+  }
+
+  // Ne pas cacher les requêtes non-GET
+  if (event.request.method !== 'GET') {
     return;
   }
 
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Mettre en cache la réponse pour utilisation hors-ligne
-        if (response && response.status === 200 && event.request.method === 'GET') {
+        // Mettre en cache uniquement les réponses valides
+        if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
+            // Try/catch supplémentaire pour éviter tout crash
+            try {
+              cache.put(event.request, responseClone);
+            } catch (e) {
+              console.warn('Cache put failed:', e);
+            }
           });
         }
         return response;
