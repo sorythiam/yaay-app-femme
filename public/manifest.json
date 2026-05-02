@@ -1,0 +1,28 @@
+{
+    "name": "Yaay - Compagnon de grossesse",
+    "short_name": "Yaay",
+    "description": "Votre compagnon numérique pour une grossesse en toute sérénité",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#FAF6F0",
+    "theme_color": "#C44536",
+    "lang": "fr",
+    "dir": "ltr",
+    "scope": "/",
+    "icons": [
+      {
+        "src": "https://api.dicebear.com/7.x/initials/svg?seed=Y&backgroundColor=C44536&textColor=FAF6F0&fontSize=60",
+        "sizes": "192x192",
+        "type": "image/svg+xml",
+        "purpose": "any"
+      },
+      {
+        "src": "https://api.dicebear.com/7.x/initials/svg?seed=Y&backgroundColor=C44536&textColor=FAF6F0&fontSize=60",
+        "sizes": "512x512",
+        "type": "image/svg+xml",
+        "purpose": "any maskable"
+      }
+    ],
+    "categories": ["medical", "health", "lifestyle"]
+  }
