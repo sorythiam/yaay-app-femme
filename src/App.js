@@ -11,16 +11,15 @@ const t = {
     firstName: "Prénom", lastName: "Nom", validate: "Valider",
     noAccount: "Pas encore de compte ?", hasAccount: "Déjà un compte ?",
     setupProfile: "Complétez votre profil",
-    week: "Semaine", weekShort: "S", days: "jours", today: "aujourd'hui",
+    week: "Semaine", weekShort: "S", days: "jours",
     nextAppointment: "Prochain rendez-vous", noAppointment: "Aucun RDV planifié",
-    riskLow: "Grossesse normale", riskMedium: "Suivi régulier", riskHigh: "⚠ Risque élevé",
+    riskLow: "Grossesse normale", riskHigh: "⚠ Risque élevé",
     riskLowDesc: "Suivi standard recommandé", riskHighDesc: "Surveillance renforcée nécessaire",
     home: "Accueil", carnet: "Carnet", sos: "SOS", more: "Plus",
     myFollowUp: "Mon suivi", trimester1: "T1", trimester2: "T2", trimester3: "T3",
     medicalRecord: "Mon carnet médical", noConsultations: "Aucune consultation enregistrée",
     weight: "Poids", bp: "TA", uh: "HU", bcf: "BCF",
-    upcomingAppointments: "Rendez-vous à venir", logout: "Se déconnecter",
-    pregnancyComplete: "Aucune grossesse en cours",
+    logout: "Se déconnecter", pregnancyComplete: "Aucune grossesse en cours",
     helloName: "Bonjour", howAreYou: "comment vous sentez-vous ?",
     daysToBaby: "jusqu'à votre bébé",
     consultationFrom: "CPN du", performedBy: "par",
@@ -28,12 +27,11 @@ const t = {
     sosTitle: "Bouton d'urgence",
     sosSubtitle: "En cas d'urgence, votre sage-femme et vos proches seront alertés immédiatement",
     sosButton: "Appuyer pour alerte",
-    sosSending: "Envoi de l'alerte...",
     sosLocating: "Localisation en cours...",
+    sosSending: "Envoi de l'alerte...",
     sosSent: "Alerte envoyée",
     sosSentDesc: "Votre position a été partagée. Aide en route.",
     sosCancel: "Annuler l'alerte",
-    sosCancelled: "Alerte annulée",
     sosError: "Erreur d'envoi",
     sosNoLocation: "Activez la géolocalisation pour utiliser le SOS",
     sosNotifiedTitle: "Personnes alertées",
@@ -46,6 +44,8 @@ const t = {
     sosUseCase5: "Convulsions ou perte de connaissance",
     activeAlert: "Alerte en cours",
     alertSentAt: "Envoyée à",
+    loadingContacts: "Chargement des contacts...",
+    noContactsYet: "Aucun contact d'urgence configuré",
   },
   wo: {
     welcome: "Dalal ak diam", login: "Dugg", signup: "Sos kont",
@@ -53,16 +53,15 @@ const t = {
     firstName: "Tur", lastName: "Sant", validate: "Wonal",
     noAccount: "Amul kont ?", hasAccount: "Am nga kont ?",
     setupProfile: "Mottali sa profil",
-    week: "Ayubés", weekShort: "S", days: "fan", today: "tey",
+    week: "Ayubés", weekShort: "S", days: "fan",
     nextAppointment: "RDV bi ñëw", noAppointment: "Amul RDV",
-    riskLow: "Biir bu baax", riskMedium: "Wuyool bu sax", riskHigh: "⚠ Mussiba ci kaw",
+    riskLow: "Biir bu baax", riskHigh: "⚠ Mussiba ci kaw",
     riskLowDesc: "Wuyool bu yor", riskHighDesc: "Sosal wuyool bu metti",
     home: "Kër", carnet: "Karne", sos: "Mussiba", more: "Yeneen",
     myFollowUp: "Sama wuyool", trimester1: "T1", trimester2: "T2", trimester3: "T3",
     medicalRecord: "Sama karne fajj", noConsultations: "Amul consultation",
     weight: "Diis", bp: "Tension", uh: "HU", bcf: "BCF",
-    upcomingAppointments: "RDV yi ñëw", logout: "Génn",
-    pregnancyComplete: "Amul biir",
+    logout: "Génn", pregnancyComplete: "Amul biir",
     helloName: "Asalaa Maleekum", howAreYou: "naka nga def ?",
     daysToBaby: "ngir sa doom",
     consultationFrom: "CPN bu", performedBy: "ko",
@@ -70,14 +69,13 @@ const t = {
     sosTitle: "Buton mussiba",
     sosSubtitle: "Su am mussiba, sa sage-femme ak sa mbokk dañu leen di yegle bu gaaw",
     sosButton: "Bësal ngir alert",
-    sosSending: "Mu ngi yónnëe alert bi...",
     sosLocating: "Mu ngi gisé fan nga nekk...",
+    sosSending: "Mu ngi yónnëe alert bi...",
     sosSent: "Alert bi yónnëe na",
     sosSentDesc: "Sa fan dañu ko yegle. Ndimbal ngi ñëw.",
     sosCancel: "Bayyi alert bi",
-    sosCancelled: "Alert bi bayyi nañu ko",
     sosError: "Erreur ci yónnëe",
-    sosNoLocation: "Joxal autorisation ci géolocalisation ngir SOS",
+    sosNoLocation: "Joxal autorisation ci géolocalisation",
     sosNotifiedTitle: "Nit ñi nu yegle",
     sosYourLocation: "Sa fan",
     sosWhenToUse: "Ban saa nga war jëfandikoo SOS",
@@ -88,6 +86,8 @@ const t = {
     sosUseCase5: "Convulsions walla bayyi xel",
     activeAlert: "Alert ngi dox",
     alertSentAt: "Yónnëe na ci",
+    loadingContacts: "Yittewu nañu sa contacts...",
+    noContactsYet: "Amul contact mussiba",
   }
 }
 
@@ -127,7 +127,7 @@ export default function App() {
   return (
     <div style={appBgStyle}>
       <PhoneFrame>
-        {loading ? <LoadingScreen tr={t[lang]}/> :
+        {loading ? <LoadingScreen/> :
          !session ? <AuthScreen tr={t[lang]} lang={lang} setLang={setLang}/> :
          !profile ? <ProfileSetupScreen tr={t[lang]} userId={session.user.id} email={session.user.email} onComplete={() => loadProfile(session.user.id)}/> :
          profile.role !== 'femme' ? <WrongRoleScreen profile={profile}/> :
@@ -170,9 +170,9 @@ function PhoneFrame({ children }) {
 }
 
 // =====================================================
-// LOADING & AUTH (inchangés)
+// LOADING & AUTH
 // =====================================================
-function LoadingScreen({ tr }) {
+function LoadingScreen() {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{
@@ -216,7 +216,7 @@ function AuthScreen({ tr, lang, setLang }) {
     <div style={{
       flex: 1, padding: 24, display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 50%, #2D5F5D 100%)',
-      color: '#FAF6F0'
+      color: '#FAF6F0', overflowY: 'auto'
     }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 6 }}>
         {['fr', 'wo'].map(l => (
@@ -229,7 +229,7 @@ function AuthScreen({ tr, lang, setLang }) {
         ))}
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 600 }}>
         <div style={{
           width: 70, height: 70, borderRadius: 22,
           background: 'rgba(244,228,193,0.95)', display: 'flex',
@@ -356,21 +356,23 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
   const [consultations, setConsultations] = useState([])
   const [appointments, setAppointments] = useState([])
   const [activeAlert, setActiveAlert] = useState(null)
+  const [emergencyContacts, setEmergencyContacts] = useState([])
+  const [midwives, setMidwives] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => { loadData() }, [])
 
   // Realtime
   useEffect(() => {
-    if (!pregnancy) return
+    if (!profile?.id) return
     const channel = supabase
-      .channel('app-changes')
+      .channel('app-changes-' + profile.id)
       .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'consultations', filter: `pregnancy_id=eq.${pregnancy.id}` },
+        { event: '*', schema: 'public', table: 'consultations' },
         () => loadData()
       )
       .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'pregnancies', filter: `id=eq.${pregnancy.id}` },
+        { event: '*', schema: 'public', table: 'pregnancies', filter: `woman_id=eq.${profile.id}` },
         () => loadData()
       )
       .on('postgres_changes',
@@ -379,9 +381,10 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
       )
       .subscribe()
     return () => { supabase.removeChannel(channel) }
-  }, [pregnancy?.id])
+  }, [profile?.id])
 
   async function loadData() {
+    // Grossesse
     const { data: preg } = await supabase
       .from('pregnancies').select('*')
       .eq('woman_id', profile.id).eq('status', 'en_cours')
@@ -404,7 +407,27 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
       setAppointments(apps || [])
     }
 
-    // Vérifier s'il y a une alerte SOS active
+    // Contacts d'urgence
+    const { data: contacts } = await supabase
+      .from('emergency_contacts').select('*')
+      .eq('woman_id', profile.id)
+      .eq('notify_for_sos', true)
+    setEmergencyContacts(contacts || [])
+
+    // Sages-femmes ayant accès
+    const { data: consents } = await supabase
+      .from('consents')
+      .select('granted_to, granted_to_profile:profiles!consents_granted_to_fkey(first_name, last_name, phone)')
+      .eq('woman_id', profile.id)
+      .eq('status', 'accorde')
+      .eq('scope', 'lecture_dossier')
+    if (consents) {
+      const unique = {}
+      consents.forEach(c => { if (c.granted_to_profile) unique[c.granted_to] = c.granted_to_profile })
+      setMidwives(Object.values(unique))
+    }
+
+    // Alerte SOS active
     const { data: alert } = await supabase
       .from('alerts').select('*')
       .eq('woman_id', profile.id)
@@ -418,7 +441,7 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
     setLoading(false)
   }
 
-  if (loading) return <LoadingScreen tr={tr}/>
+  if (loading) return <LoadingScreen/>
 
   return (
     <>
@@ -437,7 +460,7 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
       <div style={{ flex: 1, overflowY: 'auto', background: '#FAF6F0' }}>
         {tab === 'home' && <HomeView profile={profile} pregnancy={pregnancy} appointments={appointments} tr={tr}/>}
         {tab === 'carnet' && <CarnetView pregnancy={pregnancy} consultations={consultations} tr={tr}/>}
-        {tab === 'sos' && <SOSView profile={profile} activeAlert={activeAlert} tr={tr} onAlertChange={loadData}/>}
+        {tab === 'sos' && <SOSView profile={profile} activeAlert={activeAlert} emergencyContacts={emergencyContacts} midwives={midwives} tr={tr} onAlertChange={loadData}/>}
         {tab === 'more' && <MoreView profile={profile} tr={tr}/>}
       </div>
       <BottomNav tab={tab} setTab={setTab} tr={tr} hasAlert={!!activeAlert}/>
@@ -455,7 +478,7 @@ function TopBar({ profile, lang, setLang }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{ width: 36, height: 36, borderRadius: 12, background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6F0', fontSize: 18, boxShadow: '0 4px 12px rgba(196,69,54,0.3)' }}>♥</div>
         <div>
-          <div style={{ fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 700, color: '#2a1810', lineHeight: 1, letterSpacing: '-0.02em' }}>Yaay</div>
+          <div style={{ fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 700, color: '#2a1810', lineHeight: 1 }}>Yaay</div>
           <div style={{ fontSize: 10, color: '#8B6F5C', marginTop: 2, fontWeight: 500 }}>{profile.first_name}</div>
         </div>
       </div>
@@ -474,7 +497,7 @@ function TopBar({ profile, lang, setLang }) {
 }
 
 // =====================================================
-// HOME VIEW (inchangé)
+// HOME VIEW
 // =====================================================
 function HomeView({ profile, pregnancy, appointments, tr }) {
   if (!pregnancy) {
@@ -483,7 +506,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
         <div style={{ fontSize: 60, marginBottom: 16 }}>🤰</div>
         <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', marginBottom: 12 }}>{tr.pregnancyComplete}</h2>
         <p style={{ fontSize: 13, color: '#5D4037', lineHeight: 1.5 }}>
-          Demandez à votre sage-femme de créer votre dossier de grossesse dans Yaay.
+          Demandez à votre sage-femme de créer votre dossier de grossesse.
         </p>
       </div>
     )
@@ -499,7 +522,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
     <div style={{ padding: '20px 18px 100px' }}>
       <div>
         <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{tr.helloName}</div>
-        <div style={{ fontSize: 26, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810', marginTop: 4, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+        <div style={{ fontSize: 26, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810', marginTop: 4, lineHeight: 1.1 }}>
           {profile.first_name},<br/>
           <span style={{ color: '#C44536', fontStyle: 'italic' }}>{tr.howAreYou}</span>
         </div>
@@ -517,7 +540,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
             <div style={{ fontSize: 10, color: 'rgba(244,228,193,0.7)', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               {tr.weekShort}{weeks} · {tr.myFollowUp}
             </div>
-            <div style={{ fontSize: 46, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#FAF6F0', marginTop: 4, lineHeight: 1, letterSpacing: '-0.02em' }}>
+            <div style={{ fontSize: 46, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#FAF6F0', marginTop: 4, lineHeight: 1 }}>
               {daysToTerm > 0 ? daysToTerm : 0}
               <span style={{ fontSize: 16, fontWeight: 400, color: 'rgba(244,228,193,0.6)', marginLeft: 6 }}>{tr.days}</span>
             </div>
@@ -528,7 +551,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
 
         <div style={{ marginTop: 20 }}>
           <div style={{ height: 6, background: 'rgba(244,228,193,0.15)', borderRadius: 3, overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, #F4E4C1 0%, #D4A574 100%)', borderRadius: 3, boxShadow: '0 0 12px rgba(212,165,116,0.6)' }}/>
+            <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, #F4E4C1 0%, #D4A574 100%)', borderRadius: 3 }}/>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: 10, color: 'rgba(244,228,193,0.6)', fontWeight: 500 }}>
             <span>S0</span>
@@ -540,7 +563,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
         </div>
 
         <div style={{ marginTop: 18, background: isHighRisk ? 'rgba(196,69,54,0.2)' : 'rgba(244,228,193,0.12)', border: `1px solid ${isHighRisk ? 'rgba(196,69,54,0.4)' : 'rgba(244,228,193,0.2)'}`, borderRadius: 14, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 8, height: 8, borderRadius: '50%', background: isHighRisk ? '#FF6B6B' : '#7FB069', boxShadow: `0 0 10px ${isHighRisk ? 'rgba(255,107,107,0.8)' : 'rgba(127,176,105,0.8)'}` }}/>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: isHighRisk ? '#FF6B6B' : '#7FB069' }}/>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 12, color: '#FAF6F0', fontWeight: 600 }}>
               {isHighRisk ? tr.riskHigh : tr.riskLow}
@@ -587,7 +610,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
 }
 
 // =====================================================
-// CARNET VIEW (inchangé)
+// CARNET VIEW
 // =====================================================
 function CarnetView({ pregnancy, consultations, tr }) {
   if (!pregnancy) return <div style={{ padding: 24, textAlign: 'center' }}>{tr.pregnancyComplete}</div>
@@ -641,41 +664,16 @@ function MiniVital({ label, value, unit }) {
 }
 
 // =====================================================
-// SOS VIEW - LE GROS MORCEAU 🚨
+// SOS VIEW - VERSION CORRIGÉE
 // =====================================================
-function SOSView({ profile, activeAlert, tr, onAlertChange }) {
-  const [step, setStep] = useState('idle') // idle | locating | sending | sent | error | active
+function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAlertChange }) {
+  const [step, setStep] = useState('idle')
   const [error, setError] = useState(null)
-  const [emergencyContacts, setEmergencyContacts] = useState([])
-  const [midwives, setMidwives] = useState([])
 
   useEffect(() => {
     if (activeAlert) setStep('active')
-    loadContacts()
+    else if (step === 'active') setStep('idle')
   }, [activeAlert])
-
-  async function loadContacts() {
-    // Contacts d'urgence personnels
-    const { data: contacts } = await supabase
-      .from('emergency_contacts')
-      .select('*')
-      .eq('woman_id', profile.id)
-      .eq('notify_for_sos', true)
-    setEmergencyContacts(contacts || [])
-
-    // Sages-femmes ayant accès au dossier
-    const { data: consents } = await supabase
-      .from('consents')
-      .select('granted_to, granted_to_profile:profiles!consents_granted_to_fkey(first_name, last_name, phone)')
-      .eq('woman_id', profile.id)
-      .eq('status', 'accorde')
-      .eq('scope', 'lecture_dossier')
-    if (consents) {
-      const unique = {}
-      consents.forEach(c => { if (c.granted_to_profile) unique[c.granted_to] = c.granted_to_profile })
-      setMidwives(Object.values(unique))
-    }
-  }
 
   async function triggerSOS() {
     setStep('locating')
@@ -707,7 +705,6 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
           })
 
           if (insertError) throw insertError
-          setStep('sent')
           setTimeout(() => onAlertChange(), 500)
         } catch (err) {
           setError(err.message)
@@ -724,6 +721,7 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
 
   async function cancelAlert() {
     if (!activeAlert) return
+    if (!confirm(`${tr.sosCancel} ?`)) return
     await supabase.from('alerts').update({
       status: 'resolue',
       resolved_at: new Date().toISOString(),
@@ -737,103 +735,146 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
   if (step === 'active' && activeAlert) {
     return (
       <div style={{
-        flex: 1, padding: 24,
+        flex: 1,
         background: 'linear-gradient(180deg, #C44536 0%, #8B2E26 100%)',
-        color: '#FAF6F0', overflowY: 'auto'
+        color: '#FAF6F0',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
       }}>
-        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+        {/* Header avec bouton Annuler TOUJOURS visible */}
+        <div style={{
+          padding: '14px 18px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: '1px solid rgba(244,228,193,0.2)',
+          flexShrink: 0,
+          background: 'rgba(0,0,0,0.1)'
+        }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+            🚨 {tr.activeAlert}
+          </div>
+          <button onClick={cancelAlert} style={{
+            padding: '8px 14px',
+            background: '#FAF6F0',
+            color: '#8B2E26',
+            borderRadius: 10,
+            border: 'none',
+            fontSize: 12,
+            fontWeight: 700,
+            cursor: 'pointer',
+            fontFamily: 'inherit'
+          }}>
+            ✕ {tr.sosCancel}
+          </button>
+        </div>
+
+        {/* Contenu scrollable */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
+          <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <div style={{
+              width: 80, height: 80, borderRadius: '50%',
+              background: 'rgba(244,228,193,0.15)', display: 'flex',
+              alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto', border: '3px solid #FAF6F0', fontSize: 36
+            }}>✓</div>
+            <div style={{ fontSize: 26, fontFamily: 'Georgia, serif', fontWeight: 600, marginTop: 16 }}>
+              {tr.sosSent}
+            </div>
+            <div style={{ fontSize: 12, color: 'rgba(244,228,193,0.85)', marginTop: 6 }}>
+              {tr.sosSentDesc}
+            </div>
+            <div style={{ fontSize: 10, color: 'rgba(244,228,193,0.6)', marginTop: 4 }}>
+              {tr.alertSentAt} {new Date(activeAlert.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+            </div>
+          </div>
+
+          {/* Carte position */}
           <div style={{
-            width: 90, height: 90, borderRadius: '50%',
-            background: 'rgba(244,228,193,0.15)', display: 'flex',
-            alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto', border: '3px solid #FAF6F0', fontSize: 40
-          }}>✓</div>
-          <div style={{ fontSize: 28, fontFamily: 'Georgia, serif', fontWeight: 600, marginTop: 20 }}>
-            {tr.sosSent}
-          </div>
-          <div style={{ fontSize: 13, color: 'rgba(244,228,193,0.85)', marginTop: 8 }}>
-            {tr.sosSentDesc}
-          </div>
-          <div style={{ fontSize: 11, color: 'rgba(244,228,193,0.6)', marginTop: 4 }}>
-            {tr.alertSentAt} {new Date(activeAlert.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-          </div>
-        </div>
-
-        {/* Carte position */}
-        <div style={{
-          background: 'rgba(244,228,193,0.95)', color: '#2a1810',
-          borderRadius: 20, padding: 16, marginTop: 16
-        }}>
-          <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
-            📍 {tr.sosYourLocation}
-          </div>
-          <div style={{ fontSize: 13, fontFamily: 'monospace', fontWeight: 600 }}>
-            {activeAlert.latitude?.toFixed(6)}, {activeAlert.longitude?.toFixed(6)}
-          </div>
-          <div style={{ fontSize: 10, color: '#8B6F5C', marginTop: 4 }}>
-            Précision : ±{Math.round(activeAlert.gps_accuracy || 0)}m
-          </div>
-          <a
-            href={`https://www.google.com/maps?q=${activeAlert.latitude},${activeAlert.longitude}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'block', marginTop: 10, padding: '8px 12px',
-              background: '#2D5F5D', color: '#FAF6F0', borderRadius: 10,
-              fontSize: 12, fontWeight: 600, textAlign: 'center',
-              textDecoration: 'none'
-            }}
-          >
-            Voir sur Google Maps →
-          </a>
-        </div>
-
-        {/* Personnes alertées */}
-        <div style={{
-          background: 'rgba(244,228,193,0.95)', color: '#2a1810',
-          borderRadius: 20, padding: 16, marginTop: 12
-        }}>
-          <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 12 }}>
-            {tr.sosNotifiedTitle}
-          </div>
-          {emergencyContacts.map((c, i) => (
-            <div key={c.id} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '8px 0',
-              borderBottom: i < emergencyContacts.length - 1 || midwives.length > 0 ? '1px solid rgba(42,24,16,0.05)' : 'none'
-            }}>
-              <div style={{ fontSize: 18 }}>👤</div>
-              <div style={{ flex: 1, fontSize: 12 }}>
-                <div style={{ fontWeight: 600 }}>{c.full_name}</div>
-                <div style={{ color: '#8B6F5C', fontSize: 10 }}>{c.relationship} · {c.phone}</div>
-              </div>
-              <div style={{ fontSize: 10, color: '#2D5F5D', fontWeight: 600 }}>✓ Notifié</div>
+            background: 'rgba(244,228,193,0.95)', color: '#2a1810',
+            borderRadius: 16, padding: 14, marginTop: 16
+          }}>
+            <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 6 }}>
+              📍 {tr.sosYourLocation}
             </div>
-          ))}
-          {midwives.map((m, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '8px 0',
-              borderBottom: i < midwives.length - 1 ? '1px solid rgba(42,24,16,0.05)' : 'none'
-            }}>
-              <div style={{ fontSize: 18 }}>🩺</div>
-              <div style={{ flex: 1, fontSize: 12 }}>
-                <div style={{ fontWeight: 600 }}>Sage-femme {m.first_name} {m.last_name}</div>
-                <div style={{ color: '#8B6F5C', fontSize: 10 }}>{m.phone || '—'}</div>
-              </div>
-              <div style={{ fontSize: 10, color: '#2D5F5D', fontWeight: 600 }}>✓ Notifiée</div>
+            <div style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>
+              {activeAlert.latitude?.toFixed(6)}, {activeAlert.longitude?.toFixed(6)}
             </div>
-          ))}
-        </div>
+            <div style={{ fontSize: 10, color: '#8B6F5C', marginTop: 2 }}>
+              Précision : ±{Math.round(activeAlert.gps_accuracy || 0)}m
+            </div>
+            <a
+              href={`https://www.google.com/maps?q=${activeAlert.latitude},${activeAlert.longitude}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'block', marginTop: 8, padding: '8px 12px',
+                background: '#2D5F5D', color: '#FAF6F0', borderRadius: 8,
+                fontSize: 11, fontWeight: 600, textAlign: 'center',
+                textDecoration: 'none'
+              }}
+            >
+              Voir sur Google Maps →
+            </a>
+          </div>
 
-        <button onClick={cancelAlert} style={{
-          marginTop: 20, width: '100%', padding: 14,
-          background: 'rgba(244,228,193,0.15)', color: '#FAF6F0',
-          borderRadius: 14, border: '1px solid rgba(244,228,193,0.3)',
-          fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit'
-        }}>
-          {tr.sosCancel}
-        </button>
+          {/* Personnes alertées */}
+          <div style={{
+            background: 'rgba(244,228,193,0.95)', color: '#2a1810',
+            borderRadius: 16, padding: 14, marginTop: 10
+          }}>
+            <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 10 }}>
+              {tr.sosNotifiedTitle}
+            </div>
+            {emergencyContacts.length === 0 && midwives.length === 0 ? (
+              <div style={{ fontSize: 12, color: '#5D4037', fontStyle: 'italic' }}>
+                {tr.loadingContacts}
+              </div>
+            ) : (
+              <>
+                {emergencyContacts.map((c, i) => (
+                  <div key={c.id} style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '6px 0',
+                    borderBottom: i < emergencyContacts.length - 1 || midwives.length > 0 ? '1px solid rgba(42,24,16,0.05)' : 'none'
+                  }}>
+                    <div style={{ fontSize: 16 }}>👤</div>
+                    <div style={{ flex: 1, fontSize: 12 }}>
+                      <div style={{ fontWeight: 600 }}>{c.full_name}</div>
+                      <div style={{ color: '#8B6F5C', fontSize: 10 }}>{c.relationship} · {c.phone}</div>
+                    </div>
+                    <div style={{ fontSize: 9, color: '#2D5F5D', fontWeight: 700 }}>✓ Notifié</div>
+                  </div>
+                ))}
+                {midwives.map((m, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '6px 0',
+                    borderBottom: i < midwives.length - 1 ? '1px solid rgba(42,24,16,0.05)' : 'none'
+                  }}>
+                    <div style={{ fontSize: 16 }}>🩺</div>
+                    <div style={{ flex: 1, fontSize: 12 }}>
+                      <div style={{ fontWeight: 600 }}>Sage-femme {m.first_name} {m.last_name}</div>
+                      <div style={{ color: '#8B6F5C', fontSize: 10 }}>{m.phone || '—'}</div>
+                    </div>
+                    <div style={{ fontSize: 9, color: '#2D5F5D', fontWeight: 700 }}>✓ Notifiée</div>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+
+          {/* Bouton annuler en bas (redondance) */}
+          <button onClick={cancelAlert} style={{
+            marginTop: 16, marginBottom: 10, width: '100%', padding: 14,
+            background: 'rgba(244,228,193,0.15)', color: '#FAF6F0',
+            borderRadius: 12, border: '2px solid rgba(244,228,193,0.5)',
+            fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit'
+          }}>
+            ✕ {tr.sosCancel}
+          </button>
+        </div>
       </div>
     )
   }
@@ -857,9 +898,6 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
         <div style={{ marginTop: 24, fontSize: 18, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810' }}>
           {step === 'locating' ? tr.sosLocating : tr.sosSending}
         </div>
-        <div style={{ marginTop: 8, fontSize: 12, color: '#5D4037', textAlign: 'center', maxWidth: 280 }}>
-          Veuillez patienter quelques secondes...
-        </div>
       </div>
     )
   }
@@ -876,26 +914,25 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
     )
   }
 
-  // ============ ÉCRAN : IDLE (bouton SOS) ============
+  // ============ ÉCRAN : IDLE ============
   return (
     <div style={{
-      flex: 1, padding: 24,
+      flex: 1, padding: 20,
       background: 'linear-gradient(180deg, #FAF6F0 0%, #FFE8E2 100%)',
       overflowY: 'auto'
     }}>
       <div style={{ textAlign: 'center' }}>
-        <h2 style={{ fontSize: 24, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810' }}>
+        <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810' }}>
           {tr.sosTitle}
         </h2>
-        <p style={{ fontSize: 12, color: '#5D4037', marginTop: 8, lineHeight: 1.4, maxWidth: 280, margin: '8px auto 0' }}>
+        <p style={{ fontSize: 12, color: '#5D4037', marginTop: 6, lineHeight: 1.4, maxWidth: 280, margin: '6px auto 0' }}>
           {tr.sosSubtitle}
         </p>
       </div>
 
-      {/* Bouton SOS principal */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
         <button onClick={triggerSOS} style={{
-          width: 200, height: 200, borderRadius: '50%',
+          width: 180, height: 180, borderRadius: '50%',
           background: 'radial-gradient(circle at 30% 30%, #E85D4D 0%, #C44536 50%, #8B2E26 100%)',
           color: '#FAF6F0', display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center',
@@ -903,64 +940,63 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
           border: '6px solid #FAF6F0', cursor: 'pointer', fontFamily: 'inherit',
           padding: 0
         }}>
-          <div style={{ fontSize: 48 }}>⚠️</div>
-          <div style={{ fontSize: 24, fontFamily: 'Georgia, serif', fontWeight: 700, marginTop: 4 }}>SOS</div>
+          <div style={{ fontSize: 44 }}>⚠️</div>
+          <div style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 700, marginTop: 4 }}>SOS</div>
         </button>
       </div>
 
-      <p style={{ marginTop: 24, fontSize: 13, color: '#8B2E26', fontWeight: 600, textAlign: 'center' }}>
+      <p style={{ marginTop: 18, fontSize: 13, color: '#8B2E26', fontWeight: 600, textAlign: 'center' }}>
         {tr.sosButton}
       </p>
 
-      {/* Cas d'usage */}
       <div style={{
-        marginTop: 30, background: '#FFFFFF', borderRadius: 16, padding: 16,
+        marginTop: 24, background: '#FFFFFF', borderRadius: 14, padding: 14,
         border: '1px solid rgba(42,24,16,0.06)'
       }}>
-        <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 12 }}>
+        <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 10 }}>
           ⚠️ {tr.sosWhenToUse}
         </div>
         {[tr.sosUseCase1, tr.sosUseCase2, tr.sosUseCase3, tr.sosUseCase4, tr.sosUseCase5].map((useCase, i) => (
-          <div key={i} style={{ fontSize: 12, color: '#2a1810', padding: '6px 0', display: 'flex', gap: 8 }}>
+          <div key={i} style={{ fontSize: 12, color: '#2a1810', padding: '5px 0', display: 'flex', gap: 8 }}>
             <span style={{ color: '#C44536', fontWeight: 700 }}>•</span>
             {useCase}
           </div>
         ))}
       </div>
 
-      {/* Contacts qui seront notifiés */}
+      {/* Liste des contacts qui SERONT notifiés - TOUJOURS visible */}
       <div style={{
-        marginTop: 14, background: '#DDEBE9', borderRadius: 14, padding: 14
+        marginTop: 12, background: '#DDEBE9', borderRadius: 14, padding: 12,
+        marginBottom: 20
       }}>
         <div style={{ fontSize: 11, color: '#1F4341', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
           ✓ {tr.sosNotifiedTitle} en cas d'alerte
         </div>
         {emergencyContacts.length === 0 && midwives.length === 0 ? (
-          <div style={{ fontSize: 12, color: '#5D4037', padding: '8px 0', fontStyle: 'italic' }}>
-            Chargement des contacts...
+          <div style={{ fontSize: 12, color: '#5D4037', fontStyle: 'italic', padding: '6px 0' }}>
+            {tr.loadingContacts}
           </div>
         ) : (
           <>
             {emergencyContacts.map(c => (
-              <div key={c.id} style={{ fontSize: 12, padding: '4px 0' }}>
+              <div key={c.id} style={{ fontSize: 12, padding: '4px 0', color: '#2a1810' }}>
                 👤 <strong>{c.full_name}</strong> <span style={{ color: '#5D4037', fontSize: 10 }}>({c.relationship})</span>
               </div>
             ))}
             {midwives.map((m, i) => (
-              <div key={i} style={{ fontSize: 12, padding: '4px 0' }}>
+              <div key={i} style={{ fontSize: 12, padding: '4px 0', color: '#2a1810' }}>
                 🩺 <strong>Sage-femme {m.first_name} {m.last_name}</strong>
               </div>
             ))}
           </>
         )}
       </div>
-      )
     </div>
   )
 }
 
 // =====================================================
-// MORE VIEW (inchangé)
+// MORE VIEW
 // =====================================================
 function MoreView({ profile, tr }) {
   async function handleLogout() { await supabase.auth.signOut() }
@@ -1048,7 +1084,7 @@ const mPrimaryButtonStyle = { width: '100%', padding: 13, background: 'linear-gr
 const mLinkStyle = { color: '#C44536', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 12, fontFamily: 'inherit' }
 const mErrorStyle = { marginTop: 12, padding: 10, background: '#FFE8E2', borderRadius: 10, fontSize: 11, color: '#8B2E26', fontWeight: 500 }
 
-// Inject animations CSS
+// Animations CSS
 if (typeof document !== 'undefined' && !document.getElementById('yaay-animations')) {
   const style = document.createElement('style')
   style.id = 'yaay-animations'
