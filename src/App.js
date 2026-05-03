@@ -929,25 +929,32 @@ function SOSView({ profile, activeAlert, tr, onAlertChange }) {
       </div>
 
       {/* Contacts qui seront notifiés */}
-      {(emergencyContacts.length > 0 || midwives.length > 0) && (
-        <div style={{
-          marginTop: 14, background: '#DDEBE9', borderRadius: 14, padding: 14
-        }}>
-          <div style={{ fontSize: 11, color: '#1F4341', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
-            ✓ {tr.sosNotifiedTitle} en cas d'alerte
-          </div>
-          {emergencyContacts.map(c => (
-            <div key={c.id} style={{ fontSize: 12, padding: '4px 0' }}>
-              👤 <strong>{c.full_name}</strong> <span style={{ color: '#5D4037', fontSize: 10 }}>({c.relationship})</span>
-            </div>
-          ))}
-          {midwives.map((m, i) => (
-            <div key={i} style={{ fontSize: 12, padding: '4px 0' }}>
-              🩺 <strong>Sage-femme {m.first_name} {m.last_name}</strong>
-            </div>
-          ))}
+      <div style={{
+        marginTop: 14, background: '#DDEBE9', borderRadius: 14, padding: 14
+      }}>
+        <div style={{ fontSize: 11, color: '#1F4341', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
+          ✓ {tr.sosNotifiedTitle} en cas d'alerte
         </div>
-      )}
+        {emergencyContacts.length === 0 && midwives.length === 0 ? (
+          <div style={{ fontSize: 12, color: '#5D4037', padding: '8px 0', fontStyle: 'italic' }}>
+            Chargement des contacts...
+          </div>
+        ) : (
+          <>
+            {emergencyContacts.map(c => (
+              <div key={c.id} style={{ fontSize: 12, padding: '4px 0' }}>
+                👤 <strong>{c.full_name}</strong> <span style={{ color: '#5D4037', fontSize: 10 }}>({c.relationship})</span>
+              </div>
+            ))}
+            {midwives.map((m, i) => (
+              <div key={i} style={{ fontSize: 12, padding: '4px 0' }}>
+                🩺 <strong>Sage-femme {m.first_name} {m.last_name}</strong>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+      )
     </div>
   )
 }
