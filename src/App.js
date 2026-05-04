@@ -23,9 +23,9 @@ const t = {
     helloName: "Bonjour", howAreYou: "comment vous sentez-vous ?",
     daysToBaby: "jusqu'à votre bébé",
     consultationFrom: "CPN du", performedBy: "par",
-    waitingForFirstCPN: "Votre première consultation prénatale n'a pas encore été saisie. Elle apparaîtra ici dès que votre sage-femme l'aura enregistrée.",
+    waitingForFirstCPN: "Votre première CPN n'a pas encore été saisie. Elle apparaîtra ici dès que votre sage-femme l'aura enregistrée.",
     sosTitle: "Bouton d'urgence",
-    sosSubtitle: "En cas d'urgence, votre sage-femme et vos proches seront alertés immédiatement",
+    sosSubtitle: "En cas d'urgence, votre sage-femme et vos proches seront alertés",
     sosButton: "Appuyer pour alerte",
     sosLocating: "Localisation en cours...",
     sosSending: "Envoi de l'alerte...",
@@ -33,7 +33,7 @@ const t = {
     sosSentDesc: "Votre position a été partagée. Aide en route.",
     sosCancel: "Annuler l'alerte",
     sosError: "Erreur d'envoi",
-    sosNoLocation: "Activez la géolocalisation pour utiliser le SOS",
+    sosNoLocation: "Activez la géolocalisation",
     sosNotifiedTitle: "Personnes alertées",
     sosYourLocation: "Votre position",
     sosWhenToUse: "Quand utiliser le SOS",
@@ -45,7 +45,26 @@ const t = {
     activeAlert: "Alerte en cours",
     alertSentAt: "Envoyée à",
     loadingContacts: "Chargement des contacts...",
-    noContactsYet: "Aucun contact d'urgence configuré",
+    // Consentements
+    consents: "Consentements",
+    pendingRequests: "Demandes en attente",
+    noPendingRequests: "Aucune demande en attente",
+    pendingBadge: "demande en attente",
+    pendingBadgePlural: "demandes en attente",
+    consentRequest: "Demande d'accès à mon dossier",
+    accept: "Accepter",
+    refuse: "Refuser",
+    acceptedConsents: "Accès accordés",
+    confirmAccept: "Accepter cette demande ?",
+    confirmAcceptDesc: "donnera l'accès complet à votre dossier médical, vos grossesses et vos résultats d'examens.",
+    confirmRefuse: "Refuser cette demande ?",
+    requestedAt: "Demandé le",
+    revokeAccess: "Retirer l'accès",
+    confirmRevoke: "Retirer l'accès à",
+    privacyNote: "Vous pouvez à tout moment retirer un accès. La sage-femme ne pourra plus voir votre dossier.",
+    professionalLabel: "Professionnel",
+    structureLabel: "Structure",
+    noAccessGranted: "Aucun professionnel n'a accès à votre dossier",
   },
   wo: {
     welcome: "Dalal ak diam", login: "Dugg", signup: "Sos kont",
@@ -75,7 +94,7 @@ const t = {
     sosSentDesc: "Sa fan dañu ko yegle. Ndimbal ngi ñëw.",
     sosCancel: "Bayyi alert bi",
     sosError: "Erreur ci yónnëe",
-    sosNoLocation: "Joxal autorisation ci géolocalisation",
+    sosNoLocation: "Joxal autorisation",
     sosNotifiedTitle: "Nit ñi nu yegle",
     sosYourLocation: "Sa fan",
     sosWhenToUse: "Ban saa nga war jëfandikoo SOS",
@@ -87,7 +106,25 @@ const t = {
     activeAlert: "Alert ngi dox",
     alertSentAt: "Yónnëe na ci",
     loadingContacts: "Yittewu nañu sa contacts...",
-    noContactsYet: "Amul contact mussiba",
+    consents: "Joxe ndigël",
+    pendingRequests: "Ñakkaay ñu xaar",
+    noPendingRequests: "Amul ñakkaay",
+    pendingBadge: "ñakkaay bu xaar",
+    pendingBadgePlural: "ñakkaay yu xaar",
+    consentRequest: "Ñakkaay ngir gis sa dossier",
+    accept: "Nangu",
+    refuse: "Bañ",
+    acceptedConsents: "Joxe nañu ndigël",
+    confirmAccept: "Nangu ñakkaay bi ?",
+    confirmAcceptDesc: "dina am bés bu xareñ ci sa karne fajj, sa biir, ak sa résultats.",
+    confirmRefuse: "Bañ ñakkaay bi ?",
+    requestedAt: "Ñakkaay bi nekkees",
+    revokeAccess: "Jële bés bi",
+    confirmRevoke: "Jële bés bi ci",
+    privacyNote: "Mën nga jële bés bi ban yoon. Sage-femme bi du gis sa dossier.",
+    professionalLabel: "Professionnel",
+    structureLabel: "Lieu",
+    noAccessGranted: "Amul ku am bés ci sa dossier",
   }
 }
 
@@ -243,14 +280,10 @@ function AuthScreen({ tr, lang, setLang }) {
           {tr.welcome}
         </div>
 
-        <div style={{
-          marginTop: 32, background: '#FAF6F0', color: '#2a1810',
-          borderRadius: 24, padding: 24
-        }}>
+        <div style={{ marginTop: 32, background: '#FAF6F0', color: '#2a1810', borderRadius: 24, padding: 24 }}>
           <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 600, marginBottom: 16 }}>
             {mode === 'signup' ? tr.signup : tr.login}
           </h2>
-
           <form onSubmit={handleSubmit}>
             <div>
               <label style={mLabelStyle}>{tr.email}</label>
@@ -265,7 +298,6 @@ function AuthScreen({ tr, lang, setLang }) {
               {loading ? '...' : (mode === 'signup' ? tr.signup : tr.login)}
             </button>
           </form>
-
           <div style={{ textAlign: 'center', marginTop: 16, fontSize: 12, color: '#5D4037' }}>
             {mode === 'signup' ? tr.hasAccount : tr.noAccount}{' '}
             <button onClick={() => { setMode(mode === 'signup' ? 'signin' : 'signup'); setError(null) }} style={mLinkStyle}>
@@ -339,9 +371,6 @@ function WrongRoleScreen({ profile }) {
     <div style={{ flex: 1, padding: 24, display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
       <div style={{ fontSize: 60, marginBottom: 16 }}>🔒</div>
       <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', marginBottom: 12 }}>Accès réservé aux patientes</h2>
-      <p style={{ fontSize: 13, color: '#5D4037', lineHeight: 1.5, marginBottom: 24 }}>
-        Cette application est dédiée aux femmes enceintes. Votre compte est enregistré comme « {profile.role} ».
-      </p>
       <button onClick={handleLogout} style={mPrimaryButtonStyle}>Se déconnecter</button>
     </div>
   )
@@ -358,6 +387,7 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
   const [activeAlert, setActiveAlert] = useState(null)
   const [emergencyContacts, setEmergencyContacts] = useState([])
   const [midwives, setMidwives] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => { loadData() }, [])
@@ -379,12 +409,15 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
         { event: '*', schema: 'public', table: 'alerts', filter: `woman_id=eq.${profile.id}` },
         () => loadData()
       )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'consent_requests', filter: `woman_id=eq.${profile.id}` },
+        () => loadData()
+      )
       .subscribe()
     return () => { supabase.removeChannel(channel) }
   }, [profile?.id])
 
   async function loadData() {
-    // Grossesse
     const { data: preg } = await supabase
       .from('pregnancies').select('*')
       .eq('woman_id', profile.id).eq('status', 'en_cours')
@@ -431,12 +464,21 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
     const { data: alert } = await supabase
       .from('alerts').select('*')
       .eq('woman_id', profile.id)
-      .eq('type', 'sos')
-      .eq('status', 'active')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
+      .eq('type', 'sos').eq('status', 'active')
+      .order('created_at', { ascending: false }).limit(1).maybeSingle()
     setActiveAlert(alert)
+
+    // Demandes de consentement en attente
+    const { data: requests } = await supabase
+      .from('consent_requests')
+      .select(`*, requester:profiles!consent_requests_requested_by_fkey(
+        first_name, last_name, role, phone,
+        structure:structures(name, region)
+      )`)
+      .eq('woman_id', profile.id)
+      .eq('status', 'en_attente')
+      .order('created_at', { ascending: false })
+    setPendingRequests(requests || [])
 
     setLoading(false)
   }
@@ -457,13 +499,24 @@ function MobileApp({ profile, session, tr, lang, setLang }) {
           <span>→</span>
         </button>
       )}
+      {pendingRequests.length > 0 && tab !== 'more' && (
+        <button onClick={() => setTab('more')} style={{
+          padding: '10px 16px', background: 'linear-gradient(135deg, #D4A574 0%, #8B6F5C 100%)', color: '#FAF6F0',
+          border: 'none', cursor: 'pointer', fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          fontSize: 12, fontWeight: 700
+        }}>
+          <span>📨 {pendingRequests.length} {pendingRequests.length === 1 ? tr.pendingBadge : tr.pendingBadgePlural}</span>
+          <span>→</span>
+        </button>
+      )}
       <div style={{ flex: 1, overflowY: 'auto', background: '#FAF6F0' }}>
         {tab === 'home' && <HomeView profile={profile} pregnancy={pregnancy} appointments={appointments} tr={tr}/>}
         {tab === 'carnet' && <CarnetView pregnancy={pregnancy} consultations={consultations} tr={tr}/>}
         {tab === 'sos' && <SOSView profile={profile} activeAlert={activeAlert} emergencyContacts={emergencyContacts} midwives={midwives} tr={tr} onAlertChange={loadData}/>}
-        {tab === 'more' && <MoreView profile={profile} tr={tr}/>}
+        {tab === 'more' && <MoreView profile={profile} pendingRequests={pendingRequests} midwives={midwives} tr={tr} onChange={loadData}/>}
       </div>
-      <BottomNav tab={tab} setTab={setTab} tr={tr} hasAlert={!!activeAlert}/>
+      <BottomNav tab={tab} setTab={setTab} tr={tr} hasAlert={!!activeAlert} pendingCount={pendingRequests.length}/>
     </>
   )
 }
@@ -476,7 +529,7 @@ function TopBar({ profile, lang, setLang }) {
       background: '#FAF6F0', flexShrink: 0
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 12, background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6F0', fontSize: 18, boxShadow: '0 4px 12px rgba(196,69,54,0.3)' }}>♥</div>
+        <div style={{ width: 36, height: 36, borderRadius: 12, background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6F0', fontSize: 18 }}>♥</div>
         <div>
           <div style={{ fontSize: 20, fontFamily: 'Georgia, serif', fontWeight: 700, color: '#2a1810', lineHeight: 1 }}>Yaay</div>
           <div style={{ fontSize: 10, color: '#8B6F5C', marginTop: 2, fontWeight: 500 }}>{profile.first_name}</div>
@@ -530,8 +583,7 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
 
       <div style={{
         marginTop: 20, background: 'linear-gradient(135deg, #2D5F5D 0%, #1F4341 100%)',
-        borderRadius: 28, padding: '24px 22px', position: 'relative', overflow: 'hidden',
-        boxShadow: '0 20px 40px -15px rgba(45,95,93,0.5)'
+        borderRadius: 28, padding: '24px 22px', position: 'relative', overflow: 'hidden'
       }}>
         <div style={{ position: 'absolute', top: -30, right: -30, width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(244,228,193,0.15) 0%, transparent 70%)' }}/>
 
@@ -568,25 +620,21 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
             <div style={{ fontSize: 12, color: '#FAF6F0', fontWeight: 600 }}>
               {isHighRisk ? tr.riskHigh : tr.riskLow}
             </div>
-            <div style={{ fontSize: 10, color: 'rgba(244,228,193,0.65)', marginTop: 1 }}>
-              {isHighRisk ? tr.riskHighDesc : tr.riskLowDesc}
-            </div>
           </div>
         </div>
       </div>
 
-      {nextApp ? (
+      {nextApp && (
         <div style={{
           marginTop: 14, background: '#FFFFFF', borderRadius: 20, padding: '16px 18px',
-          display: 'flex', alignItems: 'center', gap: 14, boxShadow: '0 4px 20px rgba(42,24,16,0.06)',
-          border: '1px solid rgba(42,24,16,0.04)'
+          display: 'flex', alignItems: 'center', gap: 14, border: '1px solid rgba(42,24,16,0.04)'
         }}>
           <div style={{
             width: 52, height: 52, borderRadius: 16,
             background: 'linear-gradient(135deg, #F4E4C1 0%, #E8D5A8 100%)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0
           }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: '#8B6F5C', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: '#8B6F5C' }}>
               {new Date(nextApp.appointment_date).toLocaleDateString('fr-FR', { month: 'short' }).toUpperCase()}
             </div>
             <div style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 700, color: '#2a1810', lineHeight: 1 }}>
@@ -599,10 +647,6 @@ function HomeView({ profile, pregnancy, appointments, tr }) {
               {nextApp.type === 'cpn' ? 'Consultation prénatale' : nextApp.type}
             </div>
           </div>
-        </div>
-      ) : (
-        <div style={{ marginTop: 14, padding: 16, background: 'rgba(212,165,116,0.1)', borderRadius: 14, fontSize: 12, color: '#8B6F5C', textAlign: 'center', fontStyle: 'italic' }}>
-          {tr.noAppointment}
         </div>
       )}
     </div>
@@ -623,8 +667,8 @@ function CarnetView({ pregnancy, consultations, tr }) {
       {consultations.length === 0 ? (
         <div style={{ marginTop: 24, padding: 24, background: '#FFFFFF', borderRadius: 16, textAlign: 'center', border: '1px solid rgba(42,24,16,0.04)' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>👩🏾‍⚕️</div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: '#2a1810', marginBottom: 8 }}>{tr.noConsultations}</div>
-          <div style={{ fontSize: 12, color: '#5D4037', lineHeight: 1.5 }}>{tr.waitingForFirstCPN}</div>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>{tr.noConsultations}</div>
+          <div style={{ fontSize: 12, color: '#5D4037', lineHeight: 1.5, marginTop: 8 }}>{tr.waitingForFirstCPN}</div>
         </div>
       ) : (
         <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -656,7 +700,7 @@ function MiniVital({ label, value, unit }) {
     <div style={{ background: '#F5F1EB', borderRadius: 10, padding: 8, textAlign: 'center' }}>
       <div style={{ fontSize: 9, color: '#8B6F5C', fontWeight: 600, textTransform: 'uppercase' }}>{label}</div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 2, justifyContent: 'center', marginTop: 2 }}>
-        <span style={{ fontSize: 14, fontFamily: 'Georgia, serif', fontWeight: 700, color: '#2a1810' }}>{value}</span>
+        <span style={{ fontSize: 14, fontFamily: 'Georgia, serif', fontWeight: 700 }}>{value}</span>
         {unit && <span style={{ fontSize: 9, color: '#8B6F5C' }}>{unit}</span>}
       </div>
     </div>
@@ -664,7 +708,7 @@ function MiniVital({ label, value, unit }) {
 }
 
 // =====================================================
-// SOS VIEW - VERSION CORRIGÉE
+// SOS VIEW
 // =====================================================
 function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAlertChange }) {
   const [step, setStep] = useState('idle')
@@ -692,12 +736,8 @@ function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAler
 
         try {
           const { error: insertError } = await supabase.from('alerts').insert({
-            woman_id: profile.id,
-            type: 'sos',
-            status: 'active',
-            latitude,
-            longitude,
-            gps_accuracy: accuracy,
+            woman_id: profile.id, type: 'sos', status: 'active',
+            latitude, longitude, gps_accuracy: accuracy,
             message: 'Alerte SOS déclenchée depuis l\'application',
             husband_notified: emergencyContacts.length > 0,
             midwife_notified: midwives.length > 0,
@@ -723,54 +763,34 @@ function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAler
     if (!activeAlert) return
     if (!confirm(`${tr.sosCancel} ?`)) return
     await supabase.from('alerts').update({
-      status: 'resolue',
-      resolved_at: new Date().toISOString(),
+      status: 'resolue', resolved_at: new Date().toISOString(),
       resolution_notes: 'Annulée par la patiente'
     }).eq('id', activeAlert.id)
     setStep('idle')
     onAlertChange()
   }
 
-  // ============ ÉCRAN : ALERTE ACTIVE ============
   if (step === 'active' && activeAlert) {
     return (
       <div style={{
-        flex: 1,
-        background: 'linear-gradient(180deg, #C44536 0%, #8B2E26 100%)',
-        color: '#FAF6F0',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden'
+        flex: 1, background: 'linear-gradient(180deg, #C44536 0%, #8B2E26 100%)',
+        color: '#FAF6F0', display: 'flex', flexDirection: 'column', overflow: 'hidden'
       }}>
-        {/* Header avec bouton Annuler TOUJOURS visible */}
         <div style={{
-          padding: '14px 18px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid rgba(244,228,193,0.2)',
-          flexShrink: 0,
-          background: 'rgba(0,0,0,0.1)'
+          padding: '14px 18px', display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', borderBottom: '1px solid rgba(244,228,193,0.2)',
+          flexShrink: 0, background: 'rgba(0,0,0,0.1)'
         }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             🚨 {tr.activeAlert}
           </div>
           <button onClick={cancelAlert} style={{
-            padding: '8px 14px',
-            background: '#FAF6F0',
-            color: '#8B2E26',
-            borderRadius: 10,
-            border: 'none',
-            fontSize: 12,
-            fontWeight: 700,
-            cursor: 'pointer',
-            fontFamily: 'inherit'
-          }}>
-            ✕ {tr.sosCancel}
-          </button>
+            padding: '8px 14px', background: '#FAF6F0', color: '#8B2E26',
+            borderRadius: 10, border: 'none', fontSize: 12, fontWeight: 700,
+            cursor: 'pointer', fontFamily: 'inherit'
+          }}>✕ {tr.sosCancel}</button>
         </div>
 
-        {/* Contenu scrollable */}
         <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
           <div style={{ textAlign: 'center', padding: '12px 0' }}>
             <div style={{
@@ -779,155 +799,90 @@ function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAler
               alignItems: 'center', justifyContent: 'center',
               margin: '0 auto', border: '3px solid #FAF6F0', fontSize: 36
             }}>✓</div>
-            <div style={{ fontSize: 26, fontFamily: 'Georgia, serif', fontWeight: 600, marginTop: 16 }}>
-              {tr.sosSent}
-            </div>
-            <div style={{ fontSize: 12, color: 'rgba(244,228,193,0.85)', marginTop: 6 }}>
-              {tr.sosSentDesc}
-            </div>
-            <div style={{ fontSize: 10, color: 'rgba(244,228,193,0.6)', marginTop: 4 }}>
-              {tr.alertSentAt} {new Date(activeAlert.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-            </div>
+            <div style={{ fontSize: 26, fontFamily: 'Georgia, serif', fontWeight: 600, marginTop: 16 }}>{tr.sosSent}</div>
+            <div style={{ fontSize: 12, color: 'rgba(244,228,193,0.85)', marginTop: 6 }}>{tr.sosSentDesc}</div>
           </div>
 
-          {/* Carte position */}
-          <div style={{
-            background: 'rgba(244,228,193,0.95)', color: '#2a1810',
-            borderRadius: 16, padding: 14, marginTop: 16
-          }}>
-            <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 6 }}>
-              📍 {tr.sosYourLocation}
-            </div>
+          <div style={{ background: 'rgba(244,228,193,0.95)', color: '#2a1810', borderRadius: 16, padding: 14, marginTop: 16 }}>
+            <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, textTransform: 'uppercase', marginBottom: 6 }}>📍 {tr.sosYourLocation}</div>
             <div style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>
               {activeAlert.latitude?.toFixed(6)}, {activeAlert.longitude?.toFixed(6)}
             </div>
-            <div style={{ fontSize: 10, color: '#8B6F5C', marginTop: 2 }}>
-              Précision : ±{Math.round(activeAlert.gps_accuracy || 0)}m
-            </div>
-            <a
-              href={`https://www.google.com/maps?q=${activeAlert.latitude},${activeAlert.longitude}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'block', marginTop: 8, padding: '8px 12px',
-                background: '#2D5F5D', color: '#FAF6F0', borderRadius: 8,
-                fontSize: 11, fontWeight: 600, textAlign: 'center',
-                textDecoration: 'none'
-              }}
-            >
+            <a href={`https://www.google.com/maps?q=${activeAlert.latitude},${activeAlert.longitude}`} target="_blank" rel="noopener noreferrer"
+              style={{ display: 'block', marginTop: 8, padding: '8px 12px', background: '#2D5F5D', color: '#FAF6F0', borderRadius: 8, fontSize: 11, fontWeight: 600, textAlign: 'center', textDecoration: 'none' }}>
               Voir sur Google Maps →
             </a>
           </div>
 
-          {/* Personnes alertées */}
-          <div style={{
-            background: 'rgba(244,228,193,0.95)', color: '#2a1810',
-            borderRadius: 16, padding: 14, marginTop: 10
-          }}>
-            <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 10 }}>
-              {tr.sosNotifiedTitle}
-            </div>
+          <div style={{ background: 'rgba(244,228,193,0.95)', color: '#2a1810', borderRadius: 16, padding: 14, marginTop: 10 }}>
+            <div style={{ fontSize: 10, color: '#8B6F5C', fontWeight: 700, textTransform: 'uppercase', marginBottom: 10 }}>{tr.sosNotifiedTitle}</div>
             {emergencyContacts.length === 0 && midwives.length === 0 ? (
-              <div style={{ fontSize: 12, color: '#5D4037', fontStyle: 'italic' }}>
-                {tr.loadingContacts}
-              </div>
+              <div style={{ fontSize: 12, color: '#5D4037', fontStyle: 'italic' }}>{tr.loadingContacts}</div>
             ) : (
               <>
                 {emergencyContacts.map((c, i) => (
-                  <div key={c.id} style={{
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    padding: '6px 0',
-                    borderBottom: i < emergencyContacts.length - 1 || midwives.length > 0 ? '1px solid rgba(42,24,16,0.05)' : 'none'
-                  }}>
+                  <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 0', borderBottom: i < emergencyContacts.length - 1 || midwives.length > 0 ? '1px solid rgba(42,24,16,0.05)' : 'none' }}>
                     <div style={{ fontSize: 16 }}>👤</div>
                     <div style={{ flex: 1, fontSize: 12 }}>
                       <div style={{ fontWeight: 600 }}>{c.full_name}</div>
                       <div style={{ color: '#8B6F5C', fontSize: 10 }}>{c.relationship} · {c.phone}</div>
                     </div>
-                    <div style={{ fontSize: 9, color: '#2D5F5D', fontWeight: 700 }}>✓ Notifié</div>
+                    <div style={{ fontSize: 9, color: '#2D5F5D', fontWeight: 700 }}>✓</div>
                   </div>
                 ))}
                 {midwives.map((m, i) => (
-                  <div key={i} style={{
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    padding: '6px 0',
-                    borderBottom: i < midwives.length - 1 ? '1px solid rgba(42,24,16,0.05)' : 'none'
-                  }}>
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 0', borderBottom: i < midwives.length - 1 ? '1px solid rgba(42,24,16,0.05)' : 'none' }}>
                     <div style={{ fontSize: 16 }}>🩺</div>
                     <div style={{ flex: 1, fontSize: 12 }}>
                       <div style={{ fontWeight: 600 }}>Sage-femme {m.first_name} {m.last_name}</div>
-                      <div style={{ color: '#8B6F5C', fontSize: 10 }}>{m.phone || '—'}</div>
                     </div>
-                    <div style={{ fontSize: 9, color: '#2D5F5D', fontWeight: 700 }}>✓ Notifiée</div>
+                    <div style={{ fontSize: 9, color: '#2D5F5D', fontWeight: 700 }}>✓</div>
                   </div>
                 ))}
               </>
             )}
           </div>
 
-          {/* Bouton annuler en bas (redondance) */}
           <button onClick={cancelAlert} style={{
             marginTop: 16, marginBottom: 10, width: '100%', padding: 14,
             background: 'rgba(244,228,193,0.15)', color: '#FAF6F0',
             borderRadius: 12, border: '2px solid rgba(244,228,193,0.5)',
             fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit'
-          }}>
-            ✕ {tr.sosCancel}
-          </button>
+          }}>✕ {tr.sosCancel}</button>
         </div>
       </div>
     )
   }
 
-  // ============ ÉCRAN : LOCALISATION / ENVOI ============
   if (step === 'locating' || step === 'sending') {
     return (
-      <div style={{
-        flex: 1, padding: 24,
-        background: 'linear-gradient(180deg, #FAF6F0 0%, #FFE8E2 100%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
-      }}>
-        <div style={{
-          width: 100, height: 100, borderRadius: '50%',
-          background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)',
-          color: '#FAF6F0', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 40, animation: 'pulse 1s infinite'
-        }}>
+      <div style={{ flex: 1, padding: 24, background: 'linear-gradient(180deg, #FAF6F0 0%, #FFE8E2 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)', color: '#FAF6F0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, animation: 'pulse 1s infinite' }}>
           {step === 'locating' ? '📍' : '📡'}
         </div>
-        <div style={{ marginTop: 24, fontSize: 18, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810' }}>
+        <div style={{ marginTop: 24, fontSize: 18, fontFamily: 'Georgia, serif', fontWeight: 600 }}>
           {step === 'locating' ? tr.sosLocating : tr.sosSending}
         </div>
       </div>
     )
   }
 
-  // ============ ÉCRAN : ERREUR ============
   if (step === 'error') {
     return (
       <div style={{ flex: 1, padding: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <div style={{ fontSize: 60, marginBottom: 16 }}>⚠️</div>
         <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', marginBottom: 12, color: '#8B2E26' }}>{tr.sosError}</h2>
-        <p style={{ fontSize: 13, color: '#5D4037', lineHeight: 1.5, marginBottom: 24 }}>{error}</p>
+        <p style={{ fontSize: 13, color: '#5D4037', marginBottom: 24 }}>{error}</p>
         <button onClick={() => setStep('idle')} style={mPrimaryButtonStyle}>Réessayer</button>
       </div>
     )
   }
 
-  // ============ ÉCRAN : IDLE ============
   return (
-    <div style={{
-      flex: 1, padding: 20,
-      background: 'linear-gradient(180deg, #FAF6F0 0%, #FFE8E2 100%)',
-      overflowY: 'auto'
-    }}>
+    <div style={{ flex: 1, padding: 20, background: 'linear-gradient(180deg, #FAF6F0 0%, #FFE8E2 100%)', overflowY: 'auto' }}>
       <div style={{ textAlign: 'center' }}>
-        <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810' }}>
-          {tr.sosTitle}
-        </h2>
-        <p style={{ fontSize: 12, color: '#5D4037', marginTop: 6, lineHeight: 1.4, maxWidth: 280, margin: '6px auto 0' }}>
-          {tr.sosSubtitle}
-        </p>
+        <h2 style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 600 }}>{tr.sosTitle}</h2>
+        <p style={{ fontSize: 12, color: '#5D4037', marginTop: 6, lineHeight: 1.4, maxWidth: 280, margin: '6px auto 0' }}>{tr.sosSubtitle}</p>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
@@ -937,54 +892,37 @@ function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAler
           color: '#FAF6F0', display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 20px 50px rgba(196,69,54,0.5)',
-          border: '6px solid #FAF6F0', cursor: 'pointer', fontFamily: 'inherit',
-          padding: 0
+          border: '6px solid #FAF6F0', cursor: 'pointer', fontFamily: 'inherit'
         }}>
           <div style={{ fontSize: 44 }}>⚠️</div>
           <div style={{ fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 700, marginTop: 4 }}>SOS</div>
         </button>
       </div>
 
-      <p style={{ marginTop: 18, fontSize: 13, color: '#8B2E26', fontWeight: 600, textAlign: 'center' }}>
-        {tr.sosButton}
-      </p>
+      <p style={{ marginTop: 18, fontSize: 13, color: '#8B2E26', fontWeight: 600, textAlign: 'center' }}>{tr.sosButton}</p>
 
-      <div style={{
-        marginTop: 24, background: '#FFFFFF', borderRadius: 14, padding: 14,
-        border: '1px solid rgba(42,24,16,0.06)'
-      }}>
-        <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 10 }}>
-          ⚠️ {tr.sosWhenToUse}
-        </div>
+      <div style={{ marginTop: 24, background: '#FFFFFF', borderRadius: 14, padding: 14, border: '1px solid rgba(42,24,16,0.06)' }}>
+        <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 700, textTransform: 'uppercase', marginBottom: 10 }}>⚠️ {tr.sosWhenToUse}</div>
         {[tr.sosUseCase1, tr.sosUseCase2, tr.sosUseCase3, tr.sosUseCase4, tr.sosUseCase5].map((useCase, i) => (
-          <div key={i} style={{ fontSize: 12, color: '#2a1810', padding: '5px 0', display: 'flex', gap: 8 }}>
-            <span style={{ color: '#C44536', fontWeight: 700 }}>•</span>
-            {useCase}
+          <div key={i} style={{ fontSize: 12, padding: '5px 0', display: 'flex', gap: 8 }}>
+            <span style={{ color: '#C44536', fontWeight: 700 }}>•</span>{useCase}
           </div>
         ))}
       </div>
 
-      {/* Liste des contacts qui SERONT notifiés - TOUJOURS visible */}
-      <div style={{
-        marginTop: 12, background: '#DDEBE9', borderRadius: 14, padding: 12,
-        marginBottom: 20
-      }}>
-        <div style={{ fontSize: 11, color: '#1F4341', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
-          ✓ {tr.sosNotifiedTitle} en cas d'alerte
-        </div>
+      <div style={{ marginTop: 12, background: '#DDEBE9', borderRadius: 14, padding: 12, marginBottom: 20 }}>
+        <div style={{ fontSize: 11, color: '#1F4341', fontWeight: 700, textTransform: 'uppercase', marginBottom: 8 }}>✓ {tr.sosNotifiedTitle} en cas d'alerte</div>
         {emergencyContacts.length === 0 && midwives.length === 0 ? (
-          <div style={{ fontSize: 12, color: '#5D4037', fontStyle: 'italic', padding: '6px 0' }}>
-            {tr.loadingContacts}
-          </div>
+          <div style={{ fontSize: 12, color: '#5D4037', fontStyle: 'italic', padding: '6px 0' }}>{tr.loadingContacts}</div>
         ) : (
           <>
             {emergencyContacts.map(c => (
-              <div key={c.id} style={{ fontSize: 12, padding: '4px 0', color: '#2a1810' }}>
+              <div key={c.id} style={{ fontSize: 12, padding: '4px 0' }}>
                 👤 <strong>{c.full_name}</strong> <span style={{ color: '#5D4037', fontSize: 10 }}>({c.relationship})</span>
               </div>
             ))}
             {midwives.map((m, i) => (
-              <div key={i} style={{ fontSize: 12, padding: '4px 0', color: '#2a1810' }}>
+              <div key={i} style={{ fontSize: 12, padding: '4px 0' }}>
                 🩺 <strong>Sage-femme {m.first_name} {m.last_name}</strong>
               </div>
             ))}
@@ -996,13 +934,86 @@ function SOSView({ profile, activeAlert, emergencyContacts, midwives, tr, onAler
 }
 
 // =====================================================
-// MORE VIEW
+// MORE VIEW (avec Consentements - LE NOUVEAU GROS MORCEAU)
 // =====================================================
-function MoreView({ profile, tr }) {
+function MoreView({ profile, pendingRequests, midwives, tr, onChange }) {
   async function handleLogout() { await supabase.auth.signOut() }
+  const [actionLoading, setActionLoading] = useState(null)
+  const [error, setError] = useState(null)
+
+  async function acceptRequest(request) {
+    if (!confirm(`${tr.confirmAccept}\n\n${request.requester?.first_name} ${request.requester?.last_name} ${tr.confirmAcceptDesc}`)) return
+    setActionLoading(request.id)
+    setError(null)
+
+    try {
+      // 1. Marquer la demande comme acceptée
+      const { error: updateError } = await supabase.from('consent_requests').update({
+        status: 'accorde',
+        responded_at: new Date().toISOString()
+      }).eq('id', request.id)
+      if (updateError) throw updateError
+
+      // 2. Créer le consentement réel
+      const { error: consentError } = await supabase.from('consents').insert([
+        {
+          woman_id: profile.id,
+          granted_to: request.requested_by,
+          scope: request.scope || 'lecture_dossier',
+          status: 'accorde',
+          granted_at: new Date().toISOString()
+        },
+        {
+          woman_id: profile.id,
+          granted_to: request.requested_by,
+          scope: 'ecriture_dossier',
+          status: 'accorde',
+          granted_at: new Date().toISOString()
+        }
+      ])
+      if (consentError) throw consentError
+
+      onChange()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  async function refuseRequest(request) {
+    if (!confirm(`${tr.confirmRefuse}`)) return
+    setActionLoading(request.id)
+    try {
+      await supabase.from('consent_requests').update({
+        status: 'refuse',
+        responded_at: new Date().toISOString()
+      }).eq('id', request.id)
+      onChange()
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  async function revokeConsent(midwifeId) {
+    if (!confirm(`${tr.confirmRevoke} ${midwives.find(m => m.id === midwifeId || true)?.first_name || 'ce professionnel'} ?`)) return
+    setActionLoading(midwifeId)
+    try {
+      await supabase.from('consents').update({
+        status: 'revoque',
+        revoked_at: new Date().toISOString()
+      }).eq('woman_id', profile.id).eq('granted_to', midwifeId)
+      onChange()
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
   return (
     <div style={{ padding: '20px 18px 100px' }}>
       <div style={{ fontSize: 26, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810' }}>Mon compte</div>
+
+      {/* Profil */}
       <div style={{ marginTop: 20, padding: 16, background: '#FFFFFF', borderRadius: 16, border: '1px solid rgba(42,24,16,0.04)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{ width: 50, height: 50, borderRadius: '50%', background: 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)', color: '#FAF6F0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 700 }}>
@@ -1018,7 +1029,113 @@ function MoreView({ profile, tr }) {
           <div>{profile.email}</div>
         </div>
       </div>
-      <button onClick={handleLogout} style={{ marginTop: 20, width: '100%', padding: 14, background: '#F5F1EB', color: '#8B2E26', borderRadius: 14, fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
+
+      {/* Section Consentements */}
+      <div style={{ marginTop: 20 }}>
+        <div style={{ fontSize: 18, fontFamily: 'Georgia, serif', fontWeight: 600, color: '#2a1810', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+          🔐 {tr.consents}
+        </div>
+
+        {error && <div style={{ marginBottom: 12, padding: 10, background: '#FFE8E2', borderRadius: 10, fontSize: 11, color: '#8B2E26' }}>⚠️ {error}</div>}
+
+        {/* Demandes en attente */}
+        {pendingRequests.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
+              📨 {tr.pendingRequests} ({pendingRequests.length})
+            </div>
+            {pendingRequests.map(req => (
+              <div key={req.id} style={{
+                background: 'linear-gradient(135deg, #FFF6E8 0%, #FFEAB8 100%)',
+                border: '2px solid #D4A574', borderRadius: 14, padding: 14, marginBottom: 10
+              }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 12,
+                    background: 'linear-gradient(135deg, #2D5F5D 0%, #1F4341 100%)',
+                    color: '#FAF6F0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 16, flexShrink: 0
+                  }}>🩺</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: '#2a1810' }}>
+                      {req.requester?.first_name} {req.requester?.last_name}
+                    </div>
+                    <div style={{ fontSize: 11, color: '#5D4037', marginTop: 2 }}>
+                      {req.requester?.role === 'sage_femme' ? 'Sage-femme' : 'Médecin'}
+                      {req.requester?.structure?.name && ` · ${req.requester.structure.name}`}
+                    </div>
+                    {req.message && (
+                      <div style={{ marginTop: 8, padding: 8, background: 'rgba(255,255,255,0.6)', borderRadius: 8, fontSize: 11, color: '#5D4037', lineHeight: 1.4, fontStyle: 'italic' }}>
+                        « {req.message} »
+                      </div>
+                    )}
+                    <div style={{ fontSize: 10, color: '#8B6F5C', marginTop: 6 }}>
+                      {tr.requestedAt} {new Date(req.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                  <button onClick={() => refuseRequest(req)} disabled={actionLoading === req.id} style={{
+                    flex: 1, padding: 10, background: '#FFFFFF', color: '#8B2E26',
+                    border: '2px solid #C44536', borderRadius: 10, fontSize: 12, fontWeight: 700,
+                    cursor: 'pointer', fontFamily: 'inherit',
+                    opacity: actionLoading === req.id ? 0.5 : 1
+                  }}>
+                    ✕ {tr.refuse}
+                  </button>
+                  <button onClick={() => acceptRequest(req)} disabled={actionLoading === req.id} style={{
+                    flex: 2, padding: 10, background: 'linear-gradient(135deg, #2D5F5D 0%, #1F4341 100%)',
+                    color: '#FAF6F0', border: 'none', borderRadius: 10,
+                    fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    opacity: actionLoading === req.id ? 0.5 : 1
+                  }}>
+                    {actionLoading === req.id ? '...' : `✓ ${tr.accept}`}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Accès accordés (sage-femmes actives) */}
+        <div>
+          <div style={{ fontSize: 11, color: '#8B6F5C', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 8 }}>
+            ✓ {tr.acceptedConsents} ({midwives.length})
+          </div>
+          {midwives.length === 0 ? (
+            <div style={{ padding: 14, background: '#F5F1EB', borderRadius: 12, fontSize: 12, color: '#8B6F5C', textAlign: 'center', fontStyle: 'italic' }}>
+              {tr.noAccessGranted}
+            </div>
+          ) : (
+            <>
+              {midwives.map((m, i) => (
+                <div key={i} style={{
+                  background: '#FFFFFF', border: '1px solid rgba(42,24,16,0.06)',
+                  borderRadius: 12, padding: 12, marginBottom: 8,
+                  display: 'flex', alignItems: 'center', gap: 10
+                }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 10,
+                    background: 'linear-gradient(135deg, #2D5F5D 0%, #1F4341 100%)',
+                    color: '#FAF6F0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 14
+                  }}>🩺</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700 }}>{m.first_name} {m.last_name}</div>
+                    <div style={{ fontSize: 10, color: '#8B6F5C' }}>{m.phone || '—'}</div>
+                  </div>
+                </div>
+              ))}
+              <div style={{ marginTop: 8, padding: 10, background: '#F4E4C1', borderRadius: 10, fontSize: 10, color: '#5D4037', lineHeight: 1.5 }}>
+                ℹ️ {tr.privacyNote}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      <button onClick={handleLogout} style={{ marginTop: 24, width: '100%', padding: 14, background: '#F5F1EB', color: '#8B2E26', borderRadius: 14, fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
         {tr.logout}
       </button>
     </div>
@@ -1026,14 +1143,14 @@ function MoreView({ profile, tr }) {
 }
 
 // =====================================================
-// BOTTOM NAVIGATION
+// BOTTOM NAVIGATION (avec badge consentements)
 // =====================================================
-function BottomNav({ tab, setTab, tr, hasAlert }) {
+function BottomNav({ tab, setTab, tr, hasAlert, pendingCount }) {
   const items = [
     { id: 'home', icon: '🏠', label: tr.home },
     { id: 'carnet', icon: '📋', label: tr.carnet },
     { id: 'sos', icon: '⚠️', label: tr.sos, primary: true },
-    { id: 'more', icon: '☰', label: tr.more },
+    { id: 'more', icon: '☰', label: tr.more, badge: pendingCount > 0 ? pendingCount : null },
   ]
   return (
     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(250,246,240,0.95)', borderTop: '1px solid rgba(42,24,16,0.08)', padding: '10px 12px 20px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', zIndex: 10 }}>
@@ -1047,8 +1164,7 @@ function BottomNav({ tab, setTab, tr, hasAlert }) {
                           active ? 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)' :
                           'linear-gradient(135deg, #E85D4D 0%, #C44536 100%)',
               color: '#FAF6F0', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 22, boxShadow: '0 8px 24px rgba(196,69,54,0.4)',
-              marginTop: -20, border: '4px solid #FAF6F0', cursor: 'pointer',
+              fontSize: 22, marginTop: -20, border: '4px solid #FAF6F0', cursor: 'pointer',
               animation: hasAlert ? 'pulse 1.2s infinite' : 'none'
             }}>{item.icon}</button>
           )
@@ -1057,9 +1173,22 @@ function BottomNav({ tab, setTab, tr, hasAlert }) {
           <button key={item.id} onClick={() => setTab(item.id)} style={{
             flex: 1, padding: '6px 4px', display: 'flex', flexDirection: 'column',
             alignItems: 'center', gap: 3, color: active ? '#C44536' : '#8B6F5C',
-            background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit'
+            background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
+            position: 'relative'
           }}>
-            <span style={{ fontSize: 20 }}>{item.icon}</span>
+            <div style={{ position: 'relative' }}>
+              <span style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.badge && (
+                <div style={{
+                  position: 'absolute', top: -4, right: -8,
+                  minWidth: 16, height: 16, padding: '0 4px',
+                  background: '#C44536', color: '#FAF6F0',
+                  borderRadius: 8, fontSize: 9, fontWeight: 700,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  border: '2px solid #FAF6F0', boxSizing: 'content-box'
+                }}>{item.badge}</div>
+              )}
+            </div>
             <span style={{ fontSize: 10, fontWeight: active ? 700 : 500 }}>{item.label}</span>
           </button>
         )
@@ -1069,7 +1198,7 @@ function BottomNav({ tab, setTab, tr, hasAlert }) {
 }
 
 // =====================================================
-// STYLES + ANIMATIONS
+// STYLES
 // =====================================================
 const appBgStyle = {
   minHeight: '100vh',
@@ -1084,7 +1213,6 @@ const mPrimaryButtonStyle = { width: '100%', padding: 13, background: 'linear-gr
 const mLinkStyle = { color: '#C44536', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 12, fontFamily: 'inherit' }
 const mErrorStyle = { marginTop: 12, padding: 10, background: '#FFE8E2', borderRadius: 10, fontSize: 11, color: '#8B2E26', fontWeight: 500 }
 
-// Animations CSS
 if (typeof document !== 'undefined' && !document.getElementById('yaay-animations')) {
   const style = document.createElement('style')
   style.id = 'yaay-animations'
