@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { supabase } from './supabase'
 import { getAdviceForWeek, getAllWeeks } from './weeklyAdvice'
 import { FemmeMedicationsView } from './MedicationsComponents'
+
 // =====================================================
 // TRANSLATIONS
 // =====================================================
@@ -15,7 +16,7 @@ const t = {
     week: "Semaine", weekShort: "S", days: "jours",
     nextAppointment: "Prochain rendez-vous",
     riskLow: "Grossesse normale", riskHigh: "⚠ Risque élevé",
-    home: "Accueil", carnet: "Carnet", advice: "Conseils", exams: "Examens", sos: "SOS", more: "Plus",
+    home: "Accueil", carnet: "Carnet", advice: "Conseils", exams: "Examens", meds: "Traitements", sos: "SOS", more: "Plus",
     myFollowUp: "Mon suivi", trimester1: "T1", trimester2: "T2", trimester3: "T3",
     medicalRecord: "Mon carnet médical", noConsultations: "Aucune consultation",
     weight: "Poids", bp: "TA", uh: "HU", bcf: "BCF",
@@ -90,7 +91,7 @@ const t = {
     week: "Ayubés", weekShort: "S", days: "fan",
     nextAppointment: "RDV bi ñëw",
     riskLow: "Biir bu baax", riskHigh: "⚠ Mussiba ci kaw",
-    home: "Kër", carnet: "Karne", advice: "Ndigël", exams: "Test", sos: "Mussiba", more: "Yeneen",
+    home: "Kër", carnet: "Karne", advice: "Ndigël", exams: "Test", meds: "Garab", sos: "Mussiba", more: "Yeneen",
     myFollowUp: "Sama wuyool", trimester1: "T1", trimester2: "T2", trimester3: "T3",
     medicalRecord: "Sama karne fajj", noConsultations: "Amul consultation",
     weight: "Diis", bp: "Tension", uh: "HU", bcf: "BCF",
@@ -1074,7 +1075,8 @@ function BottomNav({ tab, setTab, tr, hasAlert, pendingCount, lateExamsCount, un
     { id: 'home', icon: '🏠', label: tr.home },
     { id: 'advice', icon: '🌿', label: tr.advice },
     { id: 'sos', icon: '⚠️', label: tr.sos, primary: true },
-    { id: 'meds', icon: '💊', label: 'Médicaments' },
+    { id: 'exams', icon: '🩺', label: tr.exams, badge: lateExamsCount > 0 ? lateExamsCount : null },
+    { id: 'meds', icon: '💊', label: tr.meds },
     { id: 'more', icon: '☰', label: tr.more, badge: pendingCount > 0 ? pendingCount : null }
   ]
   return (
