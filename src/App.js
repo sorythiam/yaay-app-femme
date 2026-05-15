@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { supabase } from './supabase'
 import { getAdviceForWeek, getAllWeeks } from './weeklyAdvice'
 import { FemmeMedicationsView } from './MedicationsComponents'
+import { SOSTriageView } from './SOSTriage'
 
 // =====================================================
 // TRANSLATIONS
@@ -414,7 +415,7 @@ function MobileApp({ profile, tr, lang, setLang }) {
         {tab === 'advice' && <AdviceView pregnancy={pregnancy} tr={tr} lang={lang}/>}
         {tab === 'exams' && <ExamsView pregnancy={pregnancy} exams={exams} tr={tr}/>}
         {tab === 'meds' && <FemmeMedicationsView profile={profile} pregnancy={pregnancy} tr={tr}/>}
-        {tab === 'sos' && <SOSView profile={profile} activeAlert={activeAlert} emergencyContacts={emergencyContacts} midwives={midwives} tr={tr} onAlertChange={loadData}/>}
+        {tab === 'sos' && <SOSTriageView profile={profile} pregnancy={pregnancy} activeAlert={activeAlert} emergencyContacts={emergencyContacts} midwives={midwives} tr={tr} lang={lang} onAlertChange={loadData}/>}
         {tab === 'notifications' && <NotificationsView notifications={notifications} onChange={loadData} tr={tr}/>}
         {tab === 'more' && <MoreView profile={profile} pendingRequests={pendingRequests} midwives={midwives} tr={tr} onChange={loadData}/>}
       </div>
