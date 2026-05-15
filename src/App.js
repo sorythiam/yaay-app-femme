@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from './supabase'
 import { getAdviceForWeek, getAllWeeks } from './weeklyAdvice'
-
+import { FemmeMedicationsView } from './MedicationsComponents'
 // =====================================================
 // TRANSLATIONS
 // =====================================================
@@ -412,6 +412,7 @@ function MobileApp({ profile, tr, lang, setLang }) {
         {tab === 'carnet' && <CarnetView pregnancy={pregnancy} consultations={consultations} tr={tr}/>}
         {tab === 'advice' && <AdviceView pregnancy={pregnancy} tr={tr} lang={lang}/>}
         {tab === 'exams' && <ExamsView pregnancy={pregnancy} exams={exams} tr={tr}/>}
+        {tab === 'meds' && <FemmeMedicationsView profile={profile} pregnancy={pregnancy} tr={tr}/>}
         {tab === 'sos' && <SOSView profile={profile} activeAlert={activeAlert} emergencyContacts={emergencyContacts} midwives={midwives} tr={tr} onAlertChange={loadData}/>}
         {tab === 'notifications' && <NotificationsView notifications={notifications} onChange={loadData} tr={tr}/>}
         {tab === 'more' && <MoreView profile={profile} pendingRequests={pendingRequests} midwives={midwives} tr={tr} onChange={loadData}/>}
@@ -1073,7 +1074,7 @@ function BottomNav({ tab, setTab, tr, hasAlert, pendingCount, lateExamsCount, un
     { id: 'home', icon: '🏠', label: tr.home },
     { id: 'advice', icon: '🌿', label: tr.advice },
     { id: 'sos', icon: '⚠️', label: tr.sos, primary: true },
-    { id: 'exams', icon: '🩺', label: tr.exams, badge: lateExamsCount > 0 ? lateExamsCount : null },
+    { id: 'meds', icon: '💊', label: 'Médicaments' },
     { id: 'more', icon: '☰', label: tr.more, badge: pendingCount > 0 ? pendingCount : null }
   ]
   return (
