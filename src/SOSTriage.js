@@ -351,7 +351,10 @@ export function SOSTriageView({ profile, pregnancy, activeAlert, emergencyContac
     )
   }
 
-  async function runAnalysis() {
+  async function runAnalysis(onsetOverride) {
+    const onset = onsetOverride || selectedOnset
+    if (!onset) return
+    setSelectedOnset(onset)
     setStep('analyzing')
     
     const result = runTriage(selectedSymptoms, symptoms)
@@ -360,10 +363,10 @@ export function SOSTriageView({ profile, pregnancy, activeAlert, emergencyContac
     setTriageResult(result)
     
     // Generate local summary immediately
-    const localSummary = generateLocalSummary(result, onsetOptions.find(o => o.id === selectedOnset), weeksPregnant, langKey)
+    const localSummary = generateLocalSummary(result, onsetOptions.find(o => o.id === onset), weeksPregnant, langKey)
     
     // Try AI enrichment (non-blocking)
-    const aiResult = await callAITriage(result, onsetOptions.find(o => o.id === selectedOnset), pregnancy, profile)
+    const aiResult = await callAITriage(result, onsetOptions.find(o => o.id === onset), pregnancy, profile)
     setAiSummary(aiResult || localSummary)
     
     // Auto-SOS for critical cases
@@ -706,27 +709,20 @@ export function SOSTriageView({ profile, pregnancy, activeAlert, emergencyContac
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {onsetOptions.map(opt => (
-            <button key={opt.id} onClick={() => setSelectedOnset(opt.id)} style={{
-              padding: '16px 18px', background: selectedOnset === opt.id ? '#C44536' : '#FFFFFF',
-              color: selectedOnset === opt.id ? '#FAF6F0' : '#2a1810',
-              borderRadius: 14, border: selectedOnset === opt.id ? '2px solid #C44536' : '2px solid rgba(42,24,16,0.08)',
+            <button key={opt.id} onClick={() => runAnalysis(opt.id)} style={{
+              padding: '16px 18px', background: '#FFFFFF',
+              color: '#2a1810',
+              borderRadius: 14, border: '2px solid rgba(42,24,16,0.08)',
               fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit',
               display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left',
-              boxShadow: selectedOnset === opt.id ? '0 4px 12px rgba(196,69,54,0.3)' : '0 1px 3px rgba(0,0,0,0.04)'
+              boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
             }}>
               <span style={{ fontSize: 24 }}>{opt.icon}</span>
-              <span>{opt.label}</span>
+              <span style={{ flex: 1 }}>{opt.label}</span>
+              <span style={{ fontSize: 18, opacity: 0.4 }}>→</span>
             </button>
           ))}
         </div>
-
-        <button onClick={runAnalysis} disabled={!selectedOnset} style={{
-          width: '100%', padding: 15, marginTop: 20,
-          background: selectedOnset ? 'linear-gradient(135deg, #C44536 0%, #8B2E26 100%)' : 'rgba(42,24,16,0.1)',
-          color: selectedOnset ? '#FAF6F0' : '#8B6F5C',
-          borderRadius: 14, fontSize: 15, fontWeight: 700, border: 'none', cursor: selectedOnset ? 'pointer' : 'default',
-          fontFamily: 'inherit', boxShadow: selectedOnset ? '0 6px 16px rgba(196,69,54,0.3)' : 'none'
-        }}>{tx.analyze}</button>
       </div>
     )
   }
